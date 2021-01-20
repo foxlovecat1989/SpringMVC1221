@@ -20,6 +20,12 @@
         <property name="suffix" value=".jsp"></property>
     </bean>
     
+    <!-- 數據驗證資料 -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:validation_msg" />
+    </bean>
+    
+    
     <import resource="classpath:jpa-lab-config.xml"></import>
     
 </beans>

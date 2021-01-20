@@ -6,9 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -25,20 +28,39 @@ public class DeptController {
     public String read(Model model, 
             @PathVariable Optional<Integer> id,
             @PathVariable Optional<String> delete) {
-        
+        String _method = "POST";
         List dept_list = dao.queryAllDepts();
         Department dept = new Department();
         if(id.isPresent()) {
+            _method = "PUT";
             dept = dao.getDept(id.get());
+            // 根據路徑參數是否有 delete 字樣
+            if(delete.isPresent() && delete.get().equalsIgnoreCase("delete")) {
+                _method = "DELETE";
+            }
         }
         model.addAttribute("dept_list", dept_list);
         model.addAttribute("dept", dept);
+        model.addAttribute("_method", _method);
         return "dept_page";
     }
     
-    @RequestMapping(value = {"/"}, method = {RequestMethod.POST})
+    
+    @PostMapping(value = {"/"})
     public String create(@ModelAttribute("dept") Department dept) {
         dao.saveDept(dept);
+        return "redirect: ./";
+    }
+    
+    @PutMapping(value = {"/"})
+    public String update(@ModelAttribute("dept") Department dept) {
+        //dao.updateDept(dept);
+        return "redirect: ./";
+    }
+    
+    @DeleteMapping(value = {"/"})
+    public String delete(@ModelAttribute("dept") Department dept) {
+        //dao.deleteDept(dept.getId());
         return "redirect: ./";
     }
     

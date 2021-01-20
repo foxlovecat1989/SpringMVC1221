@@ -35,7 +35,7 @@ public class ClubController {
     public String create(@ModelAttribute("club") Club club, 
                          BindingResult result, 
                          Model model) {
-        // 數據驗證 @ModelAttribute("club") 一定要加
+        // 數據驗證 
         clubValidation.validate(club, result); // result 存放驗證後的結果
         if(result.hasErrors()) {
             model.addAttribute("_method", "POST");
